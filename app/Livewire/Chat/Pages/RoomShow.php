@@ -26,6 +26,8 @@ class RoomShow extends Component
         $message->save();
 
         $this->reset('body');
+
+        $this->dispatch('message.created', $message->id);
     }
 
     #[Layout('layouts.app')]

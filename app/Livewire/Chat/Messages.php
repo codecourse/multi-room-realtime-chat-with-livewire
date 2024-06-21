@@ -4,6 +4,7 @@ namespace App\Livewire\Chat;
 
 use App\Models\Room;
 use Illuminate\Support\Collection;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class Messages extends Component
@@ -17,6 +18,12 @@ class Messages extends Component
         $this->fill([
             'messages' => $this->room->messages()->with('user')->oldest()->take(100)->get(),
         ]);
+    }
+
+    #[On('message.created')]
+    public function prependMessage($id)
+    {
+        $this->messages->push(\App\Models\Message::with('user')->find($id));
     }
 
     public function render()
