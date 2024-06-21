@@ -27,6 +27,20 @@ class Users extends Component
         $this->ids = Arr::pluck($users, 'id');
     }
 
+    #[On('echo-presence:chat.room.{room.id},joining')]
+    public function setUserJoining($user)
+    {
+        $this->ids[] = $user['id'];
+    }
+
+    #[On('echo-presence:chat.room.{room.id},leaving')]
+    public function setUserLeaving($user)
+    {
+        $this->ids = array_filter($this->ids, function ($id) use ($user) {
+            return $id != $user['id'];
+        });
+    }
+
     public function render()
     {
         return view('livewire.chat.users');
