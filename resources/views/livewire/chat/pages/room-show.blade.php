@@ -25,7 +25,11 @@
                             shift: false,
                             typingTimeout: null,
                             handleTypingFinished () {
-                                console.log('Stopped typing')
+                                Echo.private('chat.room.{{ $room->id }}')
+                                    .whisper('not-typing', {
+                                        id: {{ auth()->id() }}
+                                    })
+
                                 clearTimeout(this.typingTimeout)
                             }
                         }"
@@ -36,7 +40,10 @@
                         x-on:keydown="
                             clearTimeout(typingTimeout)
 
-                            console.log('Typing')
+                            Echo.private('chat.room.{{ $room->id }}')
+                                .whisper('typing', {
+                                    id: {{ auth()->id() }}
+                                })
 
                             typingTimeout = setTimeout(handleTypingFinished, 3000)
                         "
