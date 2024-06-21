@@ -10,6 +10,13 @@ class RoomShow extends Component
 {
     public Room $room;
 
+    public string $body;
+
+    public function submit()
+    {
+        dd($this->body);
+    }
+
     #[Layout('layouts.app')]
     public function render()
     {
